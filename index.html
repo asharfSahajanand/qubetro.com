@@ -41,12 +41,7 @@
     <link rel="stylesheet" href="static/index/css/main.css" />
     <script src="static/index/font/iconfont.js"></script>
     <script src="static/index/js/jquery.min.js"></script>
-    <script
-      src="layui.all.min.js"
-      integrity="sha512-DydCfg0OjmdfkZyNIFcx2IpORrBIRWGnNg+2PgLGVHwchp6qCbr12MnrRlI73Gsf0zqvib8sWi7lTsAhY1Ywfw=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="layui.all.min.js"></script>
     <script
       src=""
       integrity="sha512-PYqZh14FSExDb67jbM60M4ri5A/Bn/xOiM1ihfPx7c1d8XywMmn2M7+Z4i+v9RF9dlzRYzqk7sXamAHKZjfyFA=="
@@ -486,18 +481,7 @@
         <a href="more/1.html">More ></a>
       </div>
       <div class="swiper_box">
-        <div
-          class="swiper-wrapper"
-          style="
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            display: flex;
-            transition-property: transform;
-            box-sizing: content-box;
-          "
-        >
+        <div class="swiper-wrapper">
           <a class="swiper-slide" href="games/roblox.html">
             <div class="thum">
               <img
@@ -931,18 +915,7 @@
         <a href="more/3.html">More ></a>
       </div>
       <div class="swiper_box_2">
-        <div
-          class="swiper-wrapper"
-          style="
-            position: relative;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            display: flex;
-            transition-property: transform;
-            box-sizing: content-box;
-          "
-        >
+        <div class="swiper-wrapper">
           <a class="swiper-slide" href="games/papas_freezeria_to_go.html">
             <div class="thum">
               <img
@@ -1377,37 +1350,141 @@ document.addEventListener("DOMContentLoaded", function(){
 
 });
 </script>
-    <script
-      src="fastclick.min.js"
-      integrity="sha512-qH+R6YL4/40iiIrnN5aNZ1sEeEalNAdnzP9jfsxFPBdIslTkwUddkSazjVWhJ3f/3Y26QF6aql0xeneuVw0h/Q=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="lodash.min.js"
-      integrity="sha512-WFN04846sdKMIP5LKNphMaWzU7YpMyCU245etK3g/2ARYbPK9Ub18eG+ljU96qKRCWh+quCY7yefSmlkQw1ANQ=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
-    <script
-      src="swiper.min.js"
-      integrity="sha512-VHsNaV1C4XbgKSc2O0rZDmkUOhMKPg/rIi8abX9qTaVDzVJnrDGHFnLnCnuPmZ3cNi1nQJm+fzJtBbZU9yRCww=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+    <script src="fastclick.min.js"></script>
+    <script src="lodash.min.js"></script>
+    <script src="swiper.min.js"></script>
     <script src="static/index/js/main.js"></script>
 
     <script>
-      let windows_width = window.screen.width;
-      new Swiper(".swiper_box", {
-        slidesPerView: "auto",
-        centerInsufficientSlides: true,
-        spaceBetween: 18,
-      });
-      new Swiper(".swiper_box_2", {
-        slidesPerView: "auto",
-        centerInsufficientSlides: true,
-        spaceBetween: windows_width > 1100 ? 0 : 15,
+      document.addEventListener('DOMContentLoaded', function() {
+        // Wait for Swiper to be available
+        function initSwipers() {
+          if (typeof Swiper === 'undefined') {
+            console.log('Waiting for Swiper to load...');
+            setTimeout(initSwipers, 100);
+            return;
+          }
+          
+          let windows_width = window.screen.width;
+          
+          // Initialize Swiper for Editor's Picks
+          const swiper1 = new Swiper(".swiper_box", {
+          slidesPerView: "auto",
+          spaceBetween: 18,
+          freeMode: true,
+          freeModeSticky: false,
+          grabCursor: true,
+          touchEventsTarget: 'container',
+          simulateTouch: true,
+          allowTouchMove: true,
+          resistance: true,
+          resistanceRatio: 0.85,
+          speed: 300,
+          mousewheel: {
+            enabled: true,
+            forceToAxis: true,
+            sensitivity: 1,
+            releaseOnEdges: false,
+          },
+        });
+
+        // Initialize Swiper for Hot Games
+        const swiper2 = new Swiper(".swiper_box_2", {
+          slidesPerView: "auto",
+          spaceBetween: windows_width > 1100 ? 0 : 15,
+          freeMode: true,
+          freeModeSticky: false,
+          grabCursor: true,
+          touchEventsTarget: 'container',
+          simulateTouch: true,
+          allowTouchMove: true,
+          resistance: true,
+          resistanceRatio: 0.85,
+          speed: 300,
+          mousewheel: {
+            enabled: true,
+            forceToAxis: true,
+            sensitivity: 1,
+            releaseOnEdges: false,
+          },
+        });
+
+        // Prevent link clicks during swipe/drag
+        function preventClickDuringSwipe() {
+          const swiperContainers = document.querySelectorAll('.swiper_box, .swiper_box_2');
+          
+          swiperContainers.forEach(function(container) {
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            let moved = false;
+            
+            container.addEventListener('mousedown', function(e) {
+              startX = e.clientX;
+              startY = e.clientY;
+              moved = false;
+            });
+            
+            container.addEventListener('mousemove', function(e) {
+              if (Math.abs(e.clientX - startX) > 5 || Math.abs(e.clientY - startY) > 5) {
+                moved = true;
+                isDragging = true;
+              }
+            });
+            
+            container.addEventListener('mouseup', function(e) {
+              if (moved) {
+                isDragging = false;
+                moved = false;
+              }
+            });
+            
+            // Touch events
+            container.addEventListener('touchstart', function(e) {
+              startX = e.touches[0].clientX;
+              startY = e.touches[0].clientY;
+              moved = false;
+            });
+            
+            container.addEventListener('touchmove', function(e) {
+              if (Math.abs(e.touches[0].clientX - startX) > 5 || Math.abs(e.touches[0].clientY - startY) > 5) {
+                moved = true;
+                isDragging = true;
+              }
+            });
+            
+            container.addEventListener('touchend', function(e) {
+              if (moved) {
+                const links = container.querySelectorAll('a');
+                links.forEach(function(link) {
+                  link.style.pointerEvents = 'none';
+                  setTimeout(function() {
+                    link.style.pointerEvents = 'auto';
+                  }, 100);
+                });
+                moved = false;
+                isDragging = false;
+              }
+            });
+            
+            // Prevent clicks on links during drag
+            const links = container.querySelectorAll('a.swiper-slide');
+            links.forEach(function(link) {
+              link.addEventListener('click', function(e) {
+                if (isDragging || moved) {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  return false;
+                }
+              }, true);
+            });
+          });
+        }
+        
+          preventClickDuringSwipe();
+        }
+        
+        initSwipers();
       });
     </script>
   </body>

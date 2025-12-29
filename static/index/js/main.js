@@ -67,3 +67,42 @@ window.addEventListener("click",(e)=>{
         search_mask.classList.remove('active');
     }
 });
+
+// Fix play button on mobile - ensure it works with touch events
+document.addEventListener('DOMContentLoaded', function() {
+    // Find all play buttons in iframe_box .action
+    const playButtons = document.querySelectorAll('.iframe_box .action a');
+    
+    playButtons.forEach(function(playButton) {
+        // Remove the javascript: href to prevent issues
+        const originalHref = playButton.getAttribute('href');
+        if (originalHref && originalHref.startsWith('javascript:')) {
+            playButton.setAttribute('href', '#');
+        }
+        
+        // Add proper event handlers for both click and touch
+        function handlePlayClick(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Find the parent iframe_box
+            const iframeBox = playButton.closest('.iframe_box');
+            if (iframeBox) {
+                iframeBox.classList.add('active');
+            }
+            
+            return false;
+        }
+        
+        // Add multiple event listeners for maximum compatibility
+        playButton.addEventListener('click', handlePlayClick, { passive: false });
+        playButton.addEventListener('touchend', function(e) {
+            e.preventDefault();
+            handlePlayClick(e);
+        }, { passive: false });
+        playButton.addEventListener('touchstart', function(e) {
+            // Prevent default to avoid double-tap zoom on iOS
+            e.preventDefault();
+        }, { passive: false });
+    });
+});
