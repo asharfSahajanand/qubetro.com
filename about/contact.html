@@ -39,17 +39,49 @@
     threshold: 300
   });
 });
-</script>    <script>
-        window.googletag = window.googletag || {cmd: []};
-        googletag.cmd.push(function () {
-               var slot = googletag.defineOutOfPageSlot('/23330730517/gamecenter7.com_inter', googletag.enums.OutOfPageFormat.INTERSTITIAL);
-            // Slot returns null if the page or device does not support interstitials
-            if (slot) slot.addService(googletag.pubads());
-            googletag.enableServices();
-            // Consider delaying until first div on page
-            googletag.display(slot);
-        });
-    </script>
+</script>    <!-- Google GPT -->
+<script async src="https://securepubads.g.doubleclick.net/tag/js/gpt.js" crossorigin="anonymous"></script>
+
+<script>
+  /* global googletag */
+  window.googletag = window.googletag || { cmd: [] };
+
+  let interstitialSlot = null;
+  let interstitialDisplayed = false;
+
+  // Define interstitial
+  googletag.cmd.push(function () {
+
+    // Show only once per session
+    if (sessionStorage.getItem("gamc_interstitial_shown")) return;
+
+    interstitialSlot = googletag.defineOutOfPageSlot(
+      "/23330730517/gamecenter7.com_inter",
+      googletag.enums.OutOfPageFormat.INTERSTITIAL
+    );
+
+    if (!interstitialSlot) return;
+
+    interstitialSlot.addService(googletag.pubads());
+
+    googletag.pubads().enableSingleRequest();
+    googletag.enableServices();
+  });
+
+  // Trigger on first user interaction 
+  document.addEventListener("click", function () {
+    if (!interstitialSlot || interstitialDisplayed) return;
+
+    interstitialDisplayed = true;
+    sessionStorage.setItem("gamc_interstitial_shown", "1");
+
+    googletag.cmd.push(function () {
+      googletag.display(interstitialSlot);
+    });
+
+  }, { once: true });
+</script>
+
   <!-- Google tag (gtag.js) -->
      <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17827934719"></script>
 <script>
