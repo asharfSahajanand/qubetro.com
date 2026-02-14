@@ -43,13 +43,13 @@
     <script src="../static/index/js/jquery.min.js"></script>
 
   <!-- Google tag (gtag.js) -->
-     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17921438969"></script>
+     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-17951697406"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
 
-  gtag('config', 'AW-17921438969');
+  gtag('config', 'AW-17951697406');
 </script> 
     <!-- Google tag (gtag.js) -->
      <script async src="https://www.googletagmanager.com/gtag/js?id=G-JCPL6QRMN1"></script>
@@ -88,7 +88,7 @@
 
 
            try {
-                gtag('event', 'conversion', { 'send_to': 'AW-17921438969/S9OGCPKEzfAbEPnpzeFC'});
+                gtag('event', 'conversion', { 'send_to': 'AW-17951697406/SBugCPa3j_gbEP7ThPBC'});
             } catch (e) {
                 console.log(e);
             }                                                                      }
@@ -136,6 +136,8 @@
             defineAd('/23330730517/gamecenter7.com_d1', 'div-gpt-ad-1766482883767-0');
             defineAd('/23330730517/gamecenter7.com_d2', 'div-gpt-ad-1766482918698-0');
             defineAd('/23330730517/gamecenter7.com_d3', 'div-gpt-ad-1766483079328-0');
+            /* Interstitial (popup) */
+            googletag.defineSlot('/23330730517/qubetro.com_inter', [[480, 320], [320, 480], [320, 50]], 'div-gpt-ad-1770809387608-0').addService(googletag.pubads());
 
             /* Lazy Load */
             googletag.pubads().enableLazyLoad({
@@ -185,6 +187,101 @@
             .ad-slot {
                 min-height: 250px;
             }
+        }
+
+        /* ================= INTERSTITIAL AD POPUP ================= */
+        .ad-popup-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 99999;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+        .ad-popup-overlay.visible {
+            display: flex;
+        }
+        .ad-popup-box {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            max-width: 480px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .ad-popup-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 14px 0;
+        }
+        .ad-popup-label {
+            font-size: 12px;
+            color: #9aa0a6;
+            margin: 0;
+        }
+        .ad-popup-close-x {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #e8eaed;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+            color: #5f6368;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-popup-close-x:hover {
+            background: #dadce0;
+        }
+        .ad-popup-body {
+            padding: 12px 16px;
+            min-height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .ad-popup-body .ad-slot-inter {
+            margin: 0 auto;
+            min-height: 250px;
+        }
+        .ad-popup-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 12px 16px 16px;
+            border-top: 1px solid #eee;
+        }
+        .ad-popup-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+        .ad-popup-btn-close {
+            background: #e8eaed;
+            color: #3c4043;
+        }
+        .ad-popup-btn-close:hover {
+            background: #dadce0;
+        }
+        .ad-popup-btn-open {
+            background: #1a73e8;
+            color: #fff;
+        }
+        .ad-popup-btn-open:hover {
+            background: #1765cc;
         }
     </style>
 </head>
@@ -363,8 +460,27 @@
                           class="layui-textarea"
                           rows="5" placeholder="Message"></textarea>
             </div>
-            <input type="submit" value="Submit" lay-submit lay-filter="contact_us">
+            <div class="ad-trigger-div" id="contactSubmitTrigger">
+                <input type="submit" value="Submit" lay-submit lay-filter="contact_us">
+            </div>
         </form>
+    </div>
+</div>
+
+<!-- Interstitial Ad Popup (shown when user clicks submit div) -->
+<div class="ad-popup-overlay" id="adPopupOverlay">
+    <div class="ad-popup-box">
+        <div class="ad-popup-header">
+            <span class="ad-popup-label">Ad</span>
+            <button type="button" class="ad-popup-close-x" id="adPopupCloseX" aria-label="Close">&times;</button>
+        </div>
+        <div class="ad-popup-body">
+            <div id="div-gpt-ad-1770809387608-0" class="ad-slot-inter"></div>
+        </div>
+        <div class="ad-popup-footer">
+            <button type="button" class="ad-popup-btn ad-popup-btn-close" id="adPopupClose">Close</button>
+            <button type="button" class="ad-popup-btn ad-popup-btn-open" id="adPopupOpen">Open</button>
+        </div>
     </div>
 </div>
 
@@ -516,6 +632,68 @@ document.addEventListener("DOMContentLoaded", function(){
             $(form).ajaxSubmit(options);
         }
     });
+
+    // ===== Interstitial Ad Popup: show when user clicks submit div =====
+    (function () {
+        var popup = document.getElementById('adPopupOverlay');
+        var trigger = document.getElementById('contactSubmitTrigger');
+        var closeX = document.getElementById('adPopupCloseX');
+        var closeBtn = document.getElementById('adPopupClose');
+        var openBtn = document.getElementById('adPopupOpen');
+        var form = document.getElementById('form');
+
+        function showAdPopup(e) {
+            if (!popup) return;
+            e.preventDefault();
+            e.stopPropagation();
+            popup.classList.add('visible');
+            if (window.googletag && typeof googletag.display === 'function') {
+                try {
+                    googletag.cmd.push(function () {
+                        googletag.display('div-gpt-ad-1770809387608-0');
+                    });
+                } catch (err) { console.log(err); }
+            }
+        }
+
+        function hideAdPopup() {
+            if (popup) popup.classList.remove('visible');
+        }
+
+        function openAndSubmit() {
+            hideAdPopup();
+            if (form && $(form).valid()) {
+                $(form).ajaxSubmit(options);
+            }
+        }
+
+        if (form) {
+            form.addEventListener('submit', function (e) {
+                e.preventDefault();
+                showAdPopup(e);
+                return false;
+            });
+        }
+        if (trigger) {
+            trigger.addEventListener('click', function (e) {
+                if (e.target && e.target.type === 'submit') {
+                    showAdPopup(e);
+                }
+            });
+        }
+        var submitInput = form ? form.querySelector('input[type="submit"]') : null;
+        if (submitInput) {
+            submitInput.addEventListener('click', showAdPopup);
+        }
+        if (closeX) closeX.addEventListener('click', hideAdPopup);
+        if (closeBtn) closeBtn.addEventListener('click', hideAdPopup);
+        if (openBtn) openBtn.addEventListener('click', openAndSubmit);
+        if (popup) {
+            popup.addEventListener('click', function (e) {
+                if (e.target === popup) hideAdPopup();
+            });
+        }
+    })();
 </script>
  <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -557,10 +735,9 @@ document.addEventListener("DOMContentLoaded", function(){
             googletag.display('div-gpt-ad-1766482883767-0');
             googletag.display('div-gpt-ad-1766482918698-0');
             googletag.display('div-gpt-ad-1766483079328-0');
+            /* Interstitial displayed when popup is opened */
         });
     </script>
-    </script>
-</script>
 </body>
 
 
